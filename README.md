@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+REACT_APP_COINMARKET_KEY=6e40be70-73a4-46be-b389-421d538612f1;REACT_APP_MOCK_SERVER=true# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

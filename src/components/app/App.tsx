@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { getLatestListings } from "../../services/coinmarket";
+import Coin from "../../services/coin";
+import Table from "../table/Table";
 
 function App() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState<Coin[]>([]);
 
   const getData = useCallback(() => {
     getLatestListings().then(setData);
@@ -12,7 +14,7 @@ function App() {
 
   return (
     <div className="App">
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Table coins={data} />
     </div>
   );
 }

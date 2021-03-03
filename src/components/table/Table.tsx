@@ -1,15 +1,20 @@
 import Coin from "../../services/coin";
 import "./Table.css";
+import { useState } from "react";
 
 function Table(prop: { coins: Coin[] }) {
   const { coins } = prop;
+  const [isRankOrderAsc, switchIsRankOrderAsc] = useState(true);
 
   return (
     <table className="coins-table">
       <thead>
         <tr className="coins-table__row coins-table__header">
           <HeaderCell>Name 📚</HeaderCell>
-          <HeaderCell>Rank 🪜</HeaderCell>
+          <HeaderCell
+            className="coins-table__cell--clickable"
+            onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}
+          >{`Rank ${isRankOrderAsc ? "👆" : "👇"}`}</HeaderCell>
           <HeaderCell>Price 💸</HeaderCell>
           <HeaderCell>Volume 📣</HeaderCell>
           <HeaderCell>Change 👛</HeaderCell>
@@ -17,7 +22,7 @@ function Table(prop: { coins: Coin[] }) {
         </tr>
       </thead>
       <tbody>
-        {coins.map((coin) => (
+        {coins.sort(isRankOrderAsc ? sortAsc : sortDesc).map((coin) => (
           <tr key={coin.id} className="coins-table__row">
             <Cell>{coin.name}</Cell>
             <Cell>{coin.cmc_rank}</Cell>
@@ -34,10 +39,29 @@ function Table(prop: { coins: Coin[] }) {
   );
 }
 
-function HeaderCell(props: { children: string | number }) {
-  const { children: data } = props;
+const sortAsc: (a: Coin, b: Coin) => number = (a, b) => a.cmc_rank - b.cmc_rank;
+const sortDesc: (a: Coin, b: Coin) => number = (a, b) =>
+  b.cmc_rank - a.cmc_rank;
 
-  return <th className="coins-table__header-cell">{data}</th>;
+function HeaderCell(props: {
+  children: string | number;
+  onClick?: () => void;
+  className?: string;
+}) {
+  const { children: data, onClick, className = "" } = props;
+
+  return (
+    <th
+      onClick={() => {
+        if (onClick != null) {
+          onClick();
+        }
+      }}
+      className={`${className} coins-table__header-cell`.trim()}
+    >
+      {data}
+    </th>
+  );
 }
 
 function Cell(props: { children: string | number }) {

@@ -1,8 +1,8 @@
 import Coin from "./coin";
 
-const getLatestListings = (): Promise<Coin[]> => {
+const getLatestListings = (limit: number): Promise<Coin[]> => {
   return fetch(
-    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+    `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=${limit.toString()}`,
     {
       method: "GET",
     }

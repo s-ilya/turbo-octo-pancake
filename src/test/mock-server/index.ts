@@ -1,9 +1,9 @@
-import { setupWorker, rest } from "msw";
-import faker from "faker";
+import { setupWorker, rest } from 'msw'
+import faker from 'faker'
 import Coin from '../../services/coin'
 
-let sequenced_number = 1;
-const sequence = () => sequenced_number++;
+let sequenced_number = 1
+const sequence = () => sequenced_number++
 
 const buildCoin: () => Coin = () => {
   return {
@@ -18,33 +18,40 @@ const buildCoin: () => Coin = () => {
         market_cap: faker.random.number(1e12),
       },
     },
-  };
-};
+  }
+}
+
+const requireLimit: () => string = () => {
+  throw Error('Limit is required')
+}
 
 const worker = setupWorker(
   rest.get(
-    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+    'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
     (req, res, ctx) => {
-      const { limit = 10 } = req.params ?? {};
-      let coins: Coin[] = [];
+      const limit = parseInt(
+        req.url.searchParams.get('limit') ?? requireLimit()
+      )
+
+      let coins: Coin[] = []
       while (coins.length < limit) {
-        coins = [...coins, buildCoin()];
+        coins = [...coins, buildCoin()]
       }
 
       return res(
         ctx.json({
           data: coins,
           status: {
-            timestamp: "2018-06-02T22:51:28.209Z",
+            timestamp: '2018-06-02T22:51:28.209Z',
             error_code: 0,
-            error_message: "",
+            error_message: '',
             elapsed: 10,
             credit_count: 1,
           },
         })
-      );
+      )
     }
   )
-);
+)
 
-export { worker };
+export { worker }

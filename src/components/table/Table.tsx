@@ -1,10 +1,10 @@
-import Coin from "../../services/coin";
-import "./Table.css";
-import { useState } from "react";
+import Coin from '../../services/coin'
+import './Table.css'
+import { useState } from 'react'
 
 function Table(prop: { coins: Coin[] }) {
-  const { coins } = prop;
-  const [isRankOrderAsc, switchIsRankOrderAsc] = useState(true);
+  const { coins } = prop
+  const [isRankOrderAsc, switchIsRankOrderAsc] = useState(true)
 
   return (
     <table className="coins-table">
@@ -14,7 +14,7 @@ function Table(prop: { coins: Coin[] }) {
           <HeaderCell
             className="coins-table__cell--clickable"
             onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}
-          >{`Rank ${isRankOrderAsc ? "👆" : "👇"}`}</HeaderCell>
+          >{`Rank ${isRankOrderAsc ? '👆' : '👇'}`}</HeaderCell>
           <HeaderCell>Price 💸</HeaderCell>
           <HeaderCell>Volume 📣</HeaderCell>
           <HeaderCell>Change 👛</HeaderCell>
@@ -36,38 +36,37 @@ function Table(prop: { coins: Coin[] }) {
         ))}
       </tbody>
     </table>
-  );
+  )
 }
 
-const sortAsc: (a: Coin, b: Coin) => number = (a, b) => a.cmc_rank - b.cmc_rank;
-const sortDesc: (a: Coin, b: Coin) => number = (a, b) =>
-  b.cmc_rank - a.cmc_rank;
+const sortAsc: (a: Coin, b: Coin) => number = (a, b) => a.cmc_rank - b.cmc_rank
+const sortDesc: (a: Coin, b: Coin) => number = (a, b) => b.cmc_rank - a.cmc_rank
 
 function HeaderCell(props: {
-  children: string | number;
-  onClick?: () => void;
-  className?: string;
+  children: string | number
+  onClick?: () => void
+  className?: string
 }) {
-  const { children: data, onClick, className = "" } = props;
+  const { children: data, onClick, className = '' } = props
 
   return (
     <th
       onClick={() => {
         if (onClick != null) {
-          onClick();
+          onClick()
         }
       }}
       className={`${className} coins-table__header-cell`.trim()}
     >
       {data}
     </th>
-  );
+  )
 }
 
 function Cell(props: { children: string | number }) {
-  const { children: data } = props;
+  const { children: data } = props
 
-  return <td className="coins-table__cell">{data}</td>;
+  return <td className="coins-table__cell">{data}</td>
 }
 
-export default Table;
+export default Table

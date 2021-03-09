@@ -6,6 +6,7 @@ import {
   coinsLimits,
   CoinsLimitSelector,
 } from '../coins-limit-selector/CoinsLimitSelector'
+import Graph from '../graph/Graph'
 
 function App() {
   const [coins, setCoins] = useState<Coin[]>([])
@@ -26,6 +27,7 @@ function App() {
     <div className="App">
       <CoinsLimitSelector limit={coinsLimit} onChange={setLimitAndGetData} />
       <Table coins={coins} />
+      <Graph data={coins} />
     </div>
   )
 }

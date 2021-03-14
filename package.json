@@ -12,8 +12,10 @@
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "faker": "^5.4.0",
+    "msw": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "recharts": "^2.0.8",
     "typescript": "^4.2.2",
@@ -46,9 +48,7 @@
   "devDependencies": {
     "@types/faker": "^5.1.7",
     "@types/react-router-dom": "^5.1.7",
-    "msw": "^0.27.0",
-    "prettier": "^2.2.1",
-    "react-router-dom": "^5.2.0"
+    "prettier": "^2.2.1"
   },
   "msw": {
     "workerDirectory": "public"

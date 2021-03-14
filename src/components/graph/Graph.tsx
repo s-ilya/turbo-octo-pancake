@@ -2,10 +2,10 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine,
 } from 'recharts'
 import Coin from '../../services/coin'
 

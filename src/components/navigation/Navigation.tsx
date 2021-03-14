@@ -1,4 +1,5 @@
-import {Link} from "react-router-dom";
+import { Link as MaterialUILink } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import './Navigation.css'
 
 function Navigation() {
@@ -6,10 +7,22 @@ function Navigation() {
     <nav className="navigation">
       <ul className="navigation__items">
         <li className="navigation__item">
-          <Link to="/table">Table</Link>
+          <MaterialUILink
+            component={Link}
+            className="navigation__link"
+            to="/table"
+          >
+            Table
+          </MaterialUILink>
         </li>
         <li className="navigation__item">
-          <Link to="/chart">Chart</Link>
+          <MaterialUILink
+            component={Link}
+            className="navigation__link"
+            to="/chart"
+          >
+            Chart
+          </MaterialUILink>
         </li>
       </ul>
     </nav>

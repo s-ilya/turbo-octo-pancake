@@ -1,5 +1,4 @@
-import { Listbox, ListboxOption } from '@reach/listbox'
-import '@reach/listbox/styles.css'
+import { MenuItem, Select } from '@material-ui/core'
 
 const coinsLimits = [2, 10, 50]
 
@@ -10,18 +9,18 @@ function CoinsLimitSelector(props: {
   const { limit, onChange } = props
 
   return (
-    <Listbox
+    <Select
       value={limit.toString()}
-      onChange={(newValue) => onChange(parseInt(newValue))}
+      onChange={(event) => onChange(parseInt(event.target.value as string))}
     >
       {coinsLimits.map((option) => {
         return (
-          <ListboxOption key={option} value={option.toString()}>
+          <MenuItem key={option} value={option.toString()}>
             {option.toString()}
-          </ListboxOption>
+          </MenuItem>
         )
       })}
-    </Listbox>
+    </Select>
   )
 }
 

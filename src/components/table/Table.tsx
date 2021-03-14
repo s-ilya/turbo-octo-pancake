@@ -1,72 +1,52 @@
 import Coin from '../../services/coin'
 import './Table.css'
 import { useState } from 'react'
+import {
+  Table as MaterialUITable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@material-ui/core'
 
 function Table(prop: { coins: Coin[] }) {
   const { coins } = prop
   const [isRankOrderAsc, switchIsRankOrderAsc] = useState(true)
 
   return (
-    <table className="coins-table">
-      <thead>
-        <tr className="coins-table__row coins-table__header">
-          <HeaderCell>Name 📚</HeaderCell>
-          <HeaderCell
-            className="coins-table__cell--clickable"
+    <MaterialUITable>
+      <TableHead>
+        <TableRow>
+          <TableCell>Name 📚</TableCell>
+          <TableCell
+            className="coins-table-cell-clickable"
             onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}
-          >{`Rank ${isRankOrderAsc ? '👆' : '👇'}`}</HeaderCell>
-          <HeaderCell>Price 💸</HeaderCell>
-          <HeaderCell>Volume 📣</HeaderCell>
-          <HeaderCell>Change 👛</HeaderCell>
-          <HeaderCell>Market Cap 💰</HeaderCell>
-        </tr>
-      </thead>
-      <tbody>
+          >{`Rank ${isRankOrderAsc ? '👆' : '👇'}`}</TableCell>
+          <TableCell>Price 💸</TableCell>
+          <TableCell>Volume 📣</TableCell>
+          <TableCell>Change 👛</TableCell>
+          <TableCell>Market Cap 💰</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {coins.sort(isRankOrderAsc ? sortAsc : sortDesc).map((coin) => (
-          <tr key={coin.id} className="coins-table__row">
-            <Cell>{coin.name}</Cell>
-            <Cell>{coin.cmc_rank}</Cell>
-            <Cell>{coin.quote.USD.price}</Cell>
-            <Cell>{coin.quote.USD.volume_24h}</Cell>
-            <Cell>
+          <TableRow key={coin.id}>
+            <TableCell>{coin.name}</TableCell>
+            <TableCell>{coin.cmc_rank}</TableCell>
+            <TableCell>{coin.quote.USD.price}</TableCell>
+            <TableCell>{coin.quote.USD.volume_24h}</TableCell>
+            <TableCell>
               {(coin.quote.USD.percent_change_24h * 100).toPrecision(4)}
-            </Cell>
-            <Cell>{coin.quote.USD.market_cap}</Cell>
-          </tr>
+            </TableCell>
+            <TableCell>{coin.quote.USD.market_cap}</TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </MaterialUITable>
   )
 }
 
 const sortAsc: (a: Coin, b: Coin) => number = (a, b) => a.cmc_rank - b.cmc_rank
 const sortDesc: (a: Coin, b: Coin) => number = (a, b) => b.cmc_rank - a.cmc_rank
-
-function HeaderCell(props: {
-  children: string | number
-  onClick?: () => void
-  className?: string
-}) {
-  const { children: data, onClick, className = '' } = props
-
-  return (
-    <th
-      onClick={() => {
-        if (onClick != null) {
-          onClick()
-        }
-      }}
-      className={`${className} coins-table__header-cell`.trim()}
-    >
-      {data}
-    </th>
-  )
-}
-
-function Cell(props: { children: string | number }) {
-  const { children: data } = props
-
-  return <td className="coins-table__cell">{data}</td>
-}
 
 export default Table

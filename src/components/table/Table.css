@@ -1,12 +1,3 @@
-.coins-table {
-    border-collapse: collapse;
-}
-
-.coins-table__header-cell, .coins-table__cell {
-    border: 1px solid black;
-    padding: 6px;
-}
-
-.coins-table__cell--clickable {
+.coins-table-cell-clickable {
     cursor: pointer;
 }

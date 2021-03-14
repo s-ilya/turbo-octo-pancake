@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { getLatestListings } from '../../services/coinmarket'
 import Coin from '../../services/coin'
 import {
@@ -7,12 +7,12 @@ import {
 } from '../coins-limit-selector/CoinsLimitSelector'
 import {
   BrowserRouter as Router,
-  Link,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom'
 import Navigation from '../navigation/Navigation'
+import { Container, Grid, Typography } from '@material-ui/core'
 
 const Table = lazy(() => import('../table/Table'))
 const Graph = lazy(() => import('../graph/Graph'))
@@ -34,26 +34,44 @@ function App() {
 
   return (
     <Router>
-      <Navigation />
-      <main>
-        <Suspense fallback="Loading...">
-          <CoinsLimitSelector
-            limit={coinsLimit}
-            onChange={setLimitAndGetData}
-          />
-          <Switch>
-            <Route exact path="/table">
-              <Table coins={coins} />
-            </Route>
-            <Route exact path="/chart">
-              <Graph data={coins} />
-            </Route>
-            <Route path="/*">
-              <Redirect to="/table" />
-            </Route>
-          </Switch>
-        </Suspense>
-      </main>
+      <Typography component="div">
+        <Container maxWidth="md">
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Navigation />
+            </Grid>
+            <Suspense
+              fallback={
+                <Grid item xs={12}>
+                  Loading...
+                </Grid>
+              }
+            >
+              <Grid item xs={12}>
+                <CoinsLimitSelector
+                  limit={coinsLimit}
+                  onChange={setLimitAndGetData}
+                />
+              </Grid>
+              <Switch>
+                <Route exact path="/table">
+                  <Grid item xs={12}>
+                    <Table coins={coins} />
+                  </Grid>
+                </Route>
+                <Route exact path="/chart">
+                  <Grid item xs={12}>
+                    <Graph data={coins} />
+                  </Grid>
+                </Route>
+                <Route path="/*">
+                  <Redirect to="/table" />
+                </Route>
+              </Switch>
+            </Suspense>
+          </Grid>
+        </Container>
+      </Typography>
     </Router>
   )
 }

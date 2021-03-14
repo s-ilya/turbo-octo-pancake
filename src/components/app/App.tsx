@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState, Suspense } from 'react'
 import { getLatestListings } from '../../services/coinmarket'
 import Coin from '../../services/coin'
-import Table from '../table/Table'
 import {
   coinsLimits,
   CoinsLimitSelector,
 } from '../coins-limit-selector/CoinsLimitSelector'
-import Graph from '../graph/Graph'
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
+import Navigation from '../navigation/Navigation'
+
+const Table = lazy(() => import('../table/Table'))
+const Graph = lazy(() => import('../graph/Graph'))
 
 function App() {
   const [coins, setCoins] = useState<Coin[]>([])
@@ -24,11 +33,28 @@ function App() {
   useEffect(() => getData(coinsLimit), [])
 
   return (
-    <div className="App">
-      <CoinsLimitSelector limit={coinsLimit} onChange={setLimitAndGetData} />
-      <Table coins={coins} />
-      <Graph data={coins} />
-    </div>
+    <Router>
+      <Navigation />
+      <main>
+        <Suspense fallback="Loading...">
+          <CoinsLimitSelector
+            limit={coinsLimit}
+            onChange={setLimitAndGetData}
+          />
+          <Switch>
+            <Route exact path="/table">
+              <Table coins={coins} />
+            </Route>
+            <Route exact path="/chart">
+              <Graph data={coins} />
+            </Route>
+            <Route path="/*">
+              <Redirect to="/table" />
+            </Route>
+          </Switch>
+        </Suspense>
+      </main>
+    </Router>
   )
 }
 

@@ -15,7 +15,7 @@ import { Navigation } from '../navigation/Navigation'
 import { LinearProgress, Container, Grid } from '@material-ui/core'
 import { CoinNameFilter } from '../coin-name-filter/CoinNameFilter'
 import { debounce } from '../../utils/debounce'
-import { useSafeSetState } from '../../utils/use-safe-set-state'
+import { useSafeSetState as useCallIfMounted } from '../../utils/use-call-if-mounted'
 
 const Table = lazy(() => import('../table/Table'))
 const Graph = lazy(() => import('../graph/Graph'))
@@ -28,36 +28,35 @@ function App() {
   const [coinsLimit, setCoinsLimit] = useState(coinsLimits[0])
   const [coinNameFilter, setCoinNameFilter] = useState('')
   const [loadStatus, setLoadStatus] = useState<LoadStatus>('pending')
-  const safeSetState = useSafeSetState()
+  const callIfMounted = useCallIfMounted()
 
-  const getData = (limit: number) => {
-    safeSetState(() => setLoadStatus('pending'))
+  const fetchCoins = (limit: number) => {
+    callIfMounted(() => setLoadStatus('pending'))
 
     getLatestListings(limit).then((response) => {
-      safeSetState(() => {
+      callIfMounted(() => {
         setCoins(response)
         setLoadStatus('ready')
       })
     })
   }
 
-  const setLimitAndGetData = (limit: number) => {
-    safeSetState(() => setCoinsLimit(limit))
-    getData(limit)
+  const setLimitAndFetchCoins = (limit: number) => {
+    callIfMounted(() => setCoinsLimit(limit))
+    fetchCoins(limit)
   }
 
-  useEffect(() => getData(coinsLimit), [])
+  useEffect(() => fetchCoins(coinsLimit), [])
 
-  const filterCoins = debounce(() => {
+  const filterCoins = () => {
     const nameRegexp = new RegExp(coinNameFilter, 'i')
-    safeSetState(() => {
+    callIfMounted(() => {
       setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
     })
-  }, 500)
+  }
 
-  useEffect(() => {
-    filterCoins()
-  }, [coins, coinNameFilter])
+  useEffect(filterCoins, [coins])
+  useEffect(debounce(filterCoins, 500), [coinNameFilter])
 
   return (
     <Router>
@@ -76,7 +75,7 @@ function App() {
             <Grid item xs={12}>
               <CoinsLimitSelector
                 limit={coinsLimit}
-                onChange={setLimitAndGetData}
+                onChange={setLimitAndFetchCoins}
               />
             </Grid>
             <Grid item xs={12}>

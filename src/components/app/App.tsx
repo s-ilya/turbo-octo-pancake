@@ -11,7 +11,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
-import Navigation from '../navigation/Navigation'
+import { Navigation } from '../navigation/Navigation'
 import { LinearProgress, Container, Grid } from '@material-ui/core'
 import { CoinNameFilter } from '../coin-name-filter/CoinNameFilter'
 import { debounce } from '../../utils/debounce'

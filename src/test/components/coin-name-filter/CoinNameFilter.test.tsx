@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { CoinNameFilter } from '../../../components/coin-name-filter/CoinNameFilter'
+
+afterEach(() => cleanup())
 
 test('it displays helper text', () => {
   render(<CoinNameFilter value="" onChange={(value) => null} />)

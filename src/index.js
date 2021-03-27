@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/app/App";
-import { worker } from "./test/mock-server";
+import { worker } from "./services/mock-server";
 
 async function main() {
   if (process.env.REACT_APP_MOCK_SERVER) {

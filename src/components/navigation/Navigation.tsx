@@ -32,4 +32,4 @@ function Navigation() {
   )
 }
 
-export default Navigation
+export { Navigation }

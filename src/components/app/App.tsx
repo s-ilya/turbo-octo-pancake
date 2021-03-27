@@ -15,6 +15,7 @@ import { Navigation } from '../navigation/Navigation'
 import { LinearProgress, Container, Grid } from '@material-ui/core'
 import { CoinNameFilter } from '../coin-name-filter/CoinNameFilter'
 import { debounce } from '../../utils/debounce'
+import { useSafeSetState } from '../../utils/use-safe-set-state'
 
 const Table = lazy(() => import('../table/Table'))
 const Graph = lazy(() => import('../graph/Graph'))
@@ -27,18 +28,21 @@ function App() {
   const [coinsLimit, setCoinsLimit] = useState(coinsLimits[0])
   const [coinNameFilter, setCoinNameFilter] = useState('')
   const [loadStatus, setLoadStatus] = useState<LoadStatus>('pending')
+  const safeSetState = useSafeSetState()
 
   const getData = (limit: number) => {
-    setLoadStatus('pending')
+    safeSetState(() => setLoadStatus('pending'))
 
     getLatestListings(limit).then((response) => {
-      setCoins(response)
-      setLoadStatus('ready')
+      safeSetState(() => {
+        setCoins(response)
+        setLoadStatus('ready')
+      })
     })
   }
 
   const setLimitAndGetData = (limit: number) => {
-    setCoinsLimit(limit)
+    safeSetState(() => setCoinsLimit(limit))
     getData(limit)
   }
 
@@ -46,7 +50,9 @@ function App() {
 
   const filterCoins = debounce(() => {
     const nameRegexp = new RegExp(coinNameFilter, 'i')
-    setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
+    safeSetState(() => {
+      setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
+    })
   }, 500)
 
   useEffect(() => {

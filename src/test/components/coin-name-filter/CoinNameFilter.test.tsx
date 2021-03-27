@@ -6,7 +6,7 @@ afterEach(() => cleanup())
 
 test('it displays helper text', () => {
   render(<CoinNameFilter value="" onChange={(value) => null} />)
-  expect(screen.getByText(/filter by name/i)).toBeInTheDocument
+  expect(screen.getByText(/filter by name/i)).toBeInTheDocument()
 })
 
 test('it notifies about changes', () => {

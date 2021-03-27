@@ -6,7 +6,7 @@ afterEach(() => cleanup())
 
 test('it displays helper text', () => {
   render(<CoinsLimitSelector limit={10} onChange={(value) => null} />)
-  expect(screen.getByText(/limit number of results/i)).toBeInTheDocument
+  expect(screen.getByText(/limit number of results/i)).toBeInTheDocument()
 })
 
 test('it displays selected value', () => {

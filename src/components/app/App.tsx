@@ -82,7 +82,7 @@ function App() {
             <Switch>
               <Route exact path="/table">
                 <Grid item xs={12}>
-                  {ifDataReady(loadStatus, <Table coins={displayCoins} />)}
+                  {ifDataReady(loadStatus, <Table coins={[...displayCoins]} />)}
                 </Grid>
               </Route>
               <Route exact path="/chart">

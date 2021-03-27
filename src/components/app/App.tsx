@@ -12,21 +12,29 @@ import {
   Switch,
 } from 'react-router-dom'
 import Navigation from '../navigation/Navigation'
-import { Container, Grid } from '@material-ui/core'
+import { LinearProgress, Container, Grid } from '@material-ui/core'
 import { CoinNameFilter } from '../coin-name-filter/CoinNameFilter'
 import { debounce } from '../../utils/debounce'
 
 const Table = lazy(() => import('../table/Table'))
 const Graph = lazy(() => import('../graph/Graph'))
 
+type LoadStatus = 'pending' | 'ready'
+
 function App() {
   const [coins, setCoins] = useState<Coin[]>([])
   const [displayCoins, setDisplayCoins] = useState<Coin[]>([])
   const [coinsLimit, setCoinsLimit] = useState(coinsLimits[0])
   const [coinNameFilter, setCoinNameFilter] = useState('')
+  const [loadStatus, setLoadStatus] = useState<LoadStatus>('pending')
 
   const getData = (limit: number) => {
-    getLatestListings(limit).then(setCoins)
+    setLoadStatus('pending')
+
+    getLatestListings(limit).then((response) => {
+      setCoins(response)
+      setLoadStatus('ready')
+    })
   }
 
   const setLimitAndGetData = (limit: number) => {
@@ -55,7 +63,7 @@ function App() {
           <Suspense
             fallback={
               <Grid item xs={12}>
-                Loading...
+                <LinearProgress />
               </Grid>
             }
           >
@@ -74,12 +82,12 @@ function App() {
             <Switch>
               <Route exact path="/table">
                 <Grid item xs={12}>
-                  <Table coins={displayCoins} />
+                  {ifDataReady(loadStatus, <Table coins={displayCoins} />)}
                 </Grid>
               </Route>
               <Route exact path="/chart">
                 <Grid item xs={12}>
-                  <Graph data={displayCoins} />
+                  {ifDataReady(loadStatus, <Graph data={displayCoins} />)}
                 </Grid>
               </Route>
               <Route path="/*">
@@ -91,6 +99,10 @@ function App() {
       </Container>
     </Router>
   )
+}
+
+function ifDataReady(loadStatus: LoadStatus, element: JSX.Element) {
+  return loadStatus === 'pending' ? <LinearProgress /> : element
 }
 
 export default App

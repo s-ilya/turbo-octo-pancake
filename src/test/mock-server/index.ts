@@ -28,7 +28,7 @@ const requireLimit: () => string = () => {
 const worker = setupWorker(
   rest.get(
     'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
-    (req, res, ctx) => {
+    async (req, res, ctx) => {
       const limit = parseInt(
         req.url.searchParams.get('limit') ?? requireLimit()
       )
@@ -38,18 +38,24 @@ const worker = setupWorker(
         coins = [...coins, buildCoin()]
       }
 
-      return res(
-        ctx.json({
-          data: coins,
-          status: {
-            timestamp: '2018-06-02T22:51:28.209Z',
-            error_code: 0,
-            error_message: '',
-            elapsed: 10,
-            credit_count: 1,
-          },
-        })
-      )
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            res(
+              ctx.json({
+                data: coins,
+                status: {
+                  timestamp: '2018-06-02T22:51:28.209Z',
+                  error_code: 0,
+                  error_message: '',
+                  elapsed: 10,
+                  credit_count: 1,
+                },
+              })
+            )
+          )
+        }, Math.random() * 1000)
+      })
     }
   )
 )

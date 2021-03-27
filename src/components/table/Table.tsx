@@ -2,12 +2,15 @@ import Coin from '../../services/coin'
 import './Table.css'
 import { useState } from 'react'
 import {
+  Button,
   Table as MaterialUITable,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from '@material-ui/core'
+
+import './Table.css'
 
 function Table(prop: { coins: Coin[] }) {
   const { coins } = prop
@@ -18,10 +21,11 @@ function Table(prop: { coins: Coin[] }) {
       <TableHead>
         <TableRow>
           <TableCell>Name 📚</TableCell>
-          <TableCell
-            className="coins-table-cell-clickable"
-            onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}
-          >{`Rank ${isRankOrderAsc ? '👆' : '👇'}`}</TableCell>
+          <TableCell>
+            <Button className="table-header-button" onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}>
+              {`Rank ${isRankOrderAsc ? '👆' : '👇'}`}
+            </Button>
+          </TableCell>
           <TableCell>Price, $ 💸</TableCell>
           <TableCell>Volume, $ 📣</TableCell>
           <TableCell>Change, % 👛</TableCell>
@@ -32,7 +36,7 @@ function Table(prop: { coins: Coin[] }) {
         {coins.sort(isRankOrderAsc ? sortAsc : sortDesc).map((coin) => (
           <TableRow key={coin.id}>
             <TableCell>{coin.name}</TableCell>
-            <TableCell>{coin.cmc_rank}</TableCell>
+            <TableCell data-testid="table-cell-cmc-rank">{coin.cmc_rank}</TableCell>
             <TableCell>{coin.quote.USD.price}</TableCell>
             <TableCell>{coin.quote.USD.volume_24h}</TableCell>
             <TableCell>

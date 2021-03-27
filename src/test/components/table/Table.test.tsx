@@ -37,3 +37,25 @@ test('it shows multiple coin rows', () => {
   expect(screen.queryByText(coins[0].name)).toBeInTheDocument()
   expect(screen.queryByText(coins[1].name)).toBeInTheDocument()
 })
+
+test('it sorts coins', () => {
+  const coinOne = buildFakeCoin()
+  const coinTwo = buildFakeCoin()
+  const coins = [coinOne, coinTwo]
+
+  coinOne.cmc_rank = 1
+  coinTwo.cmc_rank = 2
+
+  render(<Table coins={coins} />)
+
+  let rankCells = screen.queryAllByTestId("table-cell-cmc-rank")
+  expect(screen.getByRole("button")).toHaveTextContent("Rank 👆")
+  expect(rankCells[0]).toHaveTextContent("1")
+  expect(rankCells[1]).toHaveTextContent("2")
+
+  userEvent.click(screen.getByRole("button"))
+  rankCells = screen.queryAllByTestId("table-cell-cmc-rank")
+  expect(screen.getByRole("button")).toHaveTextContent("Rank 👇")
+  expect(rankCells[0]).toHaveTextContent("2")
+  expect(rankCells[1]).toHaveTextContent("1")
+})

@@ -22,10 +22,10 @@ function Table(prop: { coins: Coin[] }) {
             className="coins-table-cell-clickable"
             onClick={() => switchIsRankOrderAsc(!isRankOrderAsc)}
           >{`Rank ${isRankOrderAsc ? '👆' : '👇'}`}</TableCell>
-          <TableCell>Price 💸</TableCell>
-          <TableCell>Volume 📣</TableCell>
-          <TableCell>Change 👛</TableCell>
-          <TableCell>Market Cap 💰</TableCell>
+          <TableCell>Price, $ 💸</TableCell>
+          <TableCell>Volume, $ 📣</TableCell>
+          <TableCell>Change, % 👛</TableCell>
+          <TableCell>Market Cap, $ 💰</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

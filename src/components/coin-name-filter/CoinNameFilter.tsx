@@ -1,5 +1,4 @@
 import { FormControl, FormHelperText, TextField } from '@material-ui/core'
-import React from 'react'
 
 function CoinNameFilter(props: {
   value: string

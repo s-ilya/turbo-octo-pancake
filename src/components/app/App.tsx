@@ -13,13 +13,17 @@ import {
 } from 'react-router-dom'
 import Navigation from '../navigation/Navigation'
 import { Container, Grid } from '@material-ui/core'
+import { CoinNameFilter } from '../coin-name-filter/CoinNameFilter'
+import { debounce } from '../../utils/debounce'
 
 const Table = lazy(() => import('../table/Table'))
 const Graph = lazy(() => import('../graph/Graph'))
 
 function App() {
   const [coins, setCoins] = useState<Coin[]>([])
+  const [displayCoins, setDisplayCoins] = useState<Coin[]>([])
   const [coinsLimit, setCoinsLimit] = useState(coinsLimits[0])
+  const [coinNameFilter, setCoinNameFilter] = useState('')
 
   const getData = (limit: number) => {
     getLatestListings(limit).then(setCoins)
@@ -31,6 +35,15 @@ function App() {
   }
 
   useEffect(() => getData(coinsLimit), [])
+
+  const filterCoins = debounce(() => {
+    const nameRegexp = new RegExp(coinNameFilter, 'i')
+    setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
+  }, 500)
+
+  useEffect(() => {
+    filterCoins()
+  }, [coins, coinNameFilter])
 
   return (
     <Router>
@@ -52,15 +65,21 @@ function App() {
                 onChange={setLimitAndGetData}
               />
             </Grid>
+            <Grid item xs={12}>
+              <CoinNameFilter
+                value={coinNameFilter}
+                onChange={setCoinNameFilter}
+              />
+            </Grid>
             <Switch>
               <Route exact path="/table">
                 <Grid item xs={12}>
-                  <Table coins={coins} />
+                  <Table coins={displayCoins} />
                 </Grid>
               </Route>
               <Route exact path="/chart">
                 <Grid item xs={12}>
-                  <Graph data={coins} />
+                  <Graph data={displayCoins} />
                 </Grid>
               </Route>
               <Route path="/*">

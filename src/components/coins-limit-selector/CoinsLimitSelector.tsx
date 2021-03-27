@@ -10,7 +10,7 @@ function CoinsLimitSelector(props: {
 
   return (
     <FormControl>
-      <FormHelperText>Limit to</FormHelperText>
+      <FormHelperText>Limit number of results</FormHelperText>
       <Select
         value={limit.toString()}
         onChange={(event) => onChange(parseInt(event.target.value as string))}

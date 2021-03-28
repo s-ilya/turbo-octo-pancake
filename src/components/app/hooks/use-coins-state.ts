@@ -7,7 +7,11 @@ import { useCoinsListing } from './use-coins-listing'
 function useCoinsState(coinsLimits: number[]) {
   const [displayCoins, setDisplayCoins] = useState<Coin[]>([])
   const [coinsLimit, setCoinsLimit] = useState(coinsLimits[0])
-  const { coinNameFilter, coinNameFilterDebounced, setCoinNameFilter } = useCoinNameFilterDebounced()
+  const {
+    coinNameFilter,
+    coinNameFilterDebounced,
+    setCoinNameFilter,
+  } = useCoinNameFilterDebounced()
   const isMounted = useIsMounted()
 
   const { coins, loadStatus } = useCoinsListing(coinsLimit)
@@ -17,8 +21,12 @@ function useCoinsState(coinsLimits: number[]) {
       return
     }
 
-    const nameRegexp = new RegExp(coinNameFilterDebounced, 'i')
-    setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
+    try {
+      const nameRegexp = new RegExp(coinNameFilterDebounced, 'i')
+      setDisplayCoins(coins.filter((coin) => coin.name.match(nameRegexp)))
+    } catch (e) {
+      // ignore incorrect regexp
+    }
   }
 
   useEffect(filterCoins, [coins, coinNameFilterDebounced, isMounted])

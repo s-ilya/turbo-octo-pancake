@@ -1,5 +1,7 @@
 ## Sample application that shows data in table or chart
 
+Link: https://turbo-octo-pancake.vercel.app/
+
 Mimics coinmarketcap.com api with help of "Mock Service Worker" library: `src/services/mock-server/index.ts` in order to avoid all the hassle of authentication and request limits
 
 

@@ -9,6 +9,7 @@ import {
   YAxis,
 } from 'recharts'
 import Coin from '../../services/coin'
+import './Graph.css'
 
 function Graph(props: { data: Coin[] }) {
   const { data } = props

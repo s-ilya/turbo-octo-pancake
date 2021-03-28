@@ -10,8 +10,6 @@ import {
   TableRow,
 } from '@material-ui/core'
 
-import './Table.css'
-
 function Table(prop: { coins: Coin[] }) {
   const { coins } = prop
   const [isRankOrderAsc, switchIsRankOrderAsc] = useState(true)
